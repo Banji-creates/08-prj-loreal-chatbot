@@ -3,9 +3,9 @@ const chatForm = document.getElementById("chatForm");
 const userInput = document.getElementById("userInput");
 const chatWindow = document.getElementById("chatWindow");
 
-// Replace this URL with your actual Cloudflare Worker endpoint.
-// The worker should forward the request to OpenAI and return the JSON response.
-const WORKER_URL = "https://08-prj-loreal-chatbot.omololuayobanji.workers.dev/";
+// Use your deployed Cloudflare Worker endpoint here.
+// The worker forwards the request to OpenAI and returns the JSON response.
+const WORKER_URL = "https://08-prj-loreal-chatbot.omololuayobanji.workers.dev";
 
 const messages = [
   {
@@ -69,7 +69,7 @@ function setChatIntro() {
   );
 }
 
-async function sendMessageToOpenAI() {
+async function sendMessageToWorker() {
   const requestBody = {
     messages,
   };
@@ -111,7 +111,7 @@ chatForm.addEventListener("submit", async (event) => {
   appendMessage("ai", "Typing... please wait.");
 
   try {
-    const assistantText = await sendMessageToOpenAI();
+    const assistantText = await sendMessageToWorker();
     messages.push({ role: "assistant", content: assistantText });
 
     const typingMessage = chatWindow.querySelector(".msg.ai:last-child");
