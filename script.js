@@ -69,9 +69,9 @@ function setChatIntro() {
   );
 }
 
-async function sendMessageToOpenAI(userText) {
+async function sendMessageToOpenAI() {
   const requestBody = {
-    messages: [...messages, { role: "user", content: userText }],
+    messages,
   };
 
   const response = await fetch(WORKER_URL, {
@@ -106,12 +106,12 @@ chatForm.addEventListener("submit", async (event) => {
   latestQuestionElement.textContent = `Your latest question: ${userText}`;
   latestQuestionElement.classList.remove("hidden");
   appendMessage("user", userText);
+  messages.push({ role: "user", content: userText });
   userInput.value = "";
   appendMessage("ai", "Typing... please wait.");
 
   try {
-    const assistantText = await sendMessageToOpenAI(userText);
-    messages.push({ role: "user", content: userText });
+    const assistantText = await sendMessageToOpenAI();
     messages.push({ role: "assistant", content: assistantText });
 
     const typingMessage = chatWindow.querySelector(".msg.ai:last-child");
